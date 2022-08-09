@@ -1,0 +1,28 @@
+body {
+    background-color: aquamarine;
+}
+
+.calulator {
+    height: 200px;
+    width: 30%;
+    background-color: gray;
+    border-radius: 8%;
+    display: flex;
+}
+
+.display {
+    background-color: rgb(75, 75, 75);
+    color: aliceblue;
+    text-align: right;
+    width: 100%;
+    display: flex;
+
+}
+
+.numbers {
+    background-color: rgb(75, 75, 75);
+    height: auto;
+    width: auto;
+    display: inline-block;
+    padding: 20px;
+}
