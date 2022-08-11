@@ -1,3 +1,5 @@
+// The basic math functions
+
 function add (a, b) {
     return a+b;
 }
@@ -58,15 +60,14 @@ function operate() {
 
 
 }
-//operate()
-
 
 const container = document.querySelector('.container');
 //Display
-const display = document.querySelector('#main');
 
+const display = document.querySelector('#main');
 display.textContent = '0'
 
+// Array to store the inputed values and operator
 let total = [];
 
 // function to allow number to appear on the display when pressed
@@ -82,6 +83,13 @@ const numbers = document.querySelectorAll('.number');
             enterDigit(e.target.innerText);
         });
     });
+
+
+function enterDigit(digit) {
+    (display.textContent.length < 10) ? display.textContent += digit: false;
+}
+    
+      
 
 //funtion for using operators
 const operators = document.querySelectorAll('.operator');
@@ -112,7 +120,7 @@ equals.addEventListener('click', () => {
 })
 
 
-// Clear function
+// function for the functions keys clear, percent and negative 
 const func = document.querySelectorAll('.func');
 func.forEach (operator => {
     operator.addEventListener('click', (e) => {
@@ -155,8 +163,3 @@ decimal.addEventListener('click', () => {
         newNumber = false;
     }
 });
-
-function enterDigit(digit) {
-  (display.textContent.length < 10) ? display.textContent += digit: false;
-}
-
