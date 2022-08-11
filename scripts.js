@@ -11,7 +11,7 @@ function multiply (a, b) {
 }
 
 function divide (a, b) {
-    return a/b;
+    return (b === 0) ? "Error" : a/b;
 }
 
 /* 
@@ -37,15 +37,26 @@ function operate() {
     const first = total[0];
     const operator = total[1];
     const second = total[2];
+    let result = 0
     if (operator === '+') {
-        return (add(first, second));
+        result = (add(first, second));
     } else if (operator === '-'){
-        return (subtraction(first, second));
-    } else if (operator === '*'){
-        return (multiply(first, second));
-    } else if (operator === '/'){
-        return (divide(first, second));
+        result = (subtraction(first, second));
+    } else if (operator === 'x'){
+        result = (multiply(first, second));
+    } else if (operator === '÷'){
+        result = (divide(first, second));
     }
+    if (result === 'Error') {
+        return "Error"
+    }
+    result = Math.round(result*10000) / 10000;
+    if (result.toString().length > 10){
+        result = result.toExponential(3);
+    }
+    return result
+
+
 }
 //operate()
 
@@ -61,15 +72,16 @@ let total = [];
 // function to allow number to appear on the display when pressed
 let newNumber = true
 const numbers = document.querySelectorAll('.number');
-numbers.forEach (number => {
-    number.addEventListener('click' , (e) => {
-        if (newNumber) {
-            display.textContent = '';
-            newNumber = false;
-        } 
-        display.textContent += `${e.target.innerText}`;
-    })
-});
+    numbers.forEach (number => {
+        number.addEventListener('click' , (e) => {
+            if (newNumber || display.textContent === 'Error') {
+                display.textContent = '';
+                newNumber = false;
+            }
+            // To stop more then 9 digits being entered
+            enterDigit(e.target.innerText);
+        });
+    });
 
 //funtion for using operators
 const operators = document.querySelectorAll('.operator');
@@ -83,10 +95,21 @@ operators.forEach (operator => {
             total[2] = Number(display.textContent);
             display.textContent = operate();
             total[0] = Number(display.textContent);
+            total[1] = e.target.innerText;
             newNumber = true;
         }
     })
 });
+
+//Equals function
+const equals = document.querySelector('#equals');
+equals.addEventListener('click', () => {
+    if (total.length === 2) {
+        total[2] = Number(display.textContent);
+        display.textContent = operate();
+        total = []
+    }
+})
 
 
 // Clear function
@@ -95,6 +118,10 @@ func.forEach (operator => {
     operator.addEventListener('click', (e) => {
         if (e.target.innerText === 'C') {
             clear();
+        } else if (e.target.innerText === '%') {
+            percent();
+        } else if (e.target.innerText === '(-)') {
+            negative();
         }
     });
 });
@@ -102,4 +129,34 @@ func.forEach (operator => {
 function clear() {
     total = [];
     display.textContent = '0';
+    newNumber = true;
 }
+
+function percent() {
+   total[0] = Number(display.textContent);
+   total[1] = '÷';
+   total[2] = 10;
+   console.log(total);
+   display.textContent = operate();
+   console.log(display.textContent);
+}
+
+
+function negative() {
+    display.textContent = Number(display.textContent)*-1;
+}
+
+// add decimal point
+const decimal = document.querySelector('#decimal')
+decimal.addEventListener('click', () => {
+    const substring = '.';
+    if ((display.textContent).indexOf(substring) === -1) {
+        display.textContent += '.';
+        newNumber = false;
+    }
+});
+
+function enterDigit(digit) {
+  (display.textContent.length < 10) ? display.textContent += digit: false;
+}
+
